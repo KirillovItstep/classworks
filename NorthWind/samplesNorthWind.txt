@@ -1,0 +1,329 @@
+select * from categories limit 10;
+select * from shippers limit 10;
+select * from territories limit 10;
+select * from us_states limit 10;
+select * from region limit 10;
+
+Write a query to get Product name and quantity/unit.
+Напишите запрос для вывода названий продуктов и количества в одной упаковке.
+select product_name, quantity_per_unit from products;
+
+Write a query to get current Product list (Product ID and name).
+Напишите запрос для получения алфавитного списка продуктов, не снятых с производства (discontinued = false) (id и названий).
+select product_id, product_name,discontinued from products where discontinued == false order by product_name;
+
+Написать запрос для получения общего количества продуктов, количества продуктов, не снятых и снятых с производства
+select count(product_id) from products;
+select count(product_id) from products where discontinued==false;
+select count(product_id) from products where discontinued==true;
+или
+SELECT Count(product_name) FROM Products GROUP BY Discontinued;
+
+Write a query to get most expense and least expensive Product list (name and unit price).
+Написать запрос для получения самого дорогого и самого дешевого продукта (названия и цену за упаковку).
+select product_name, max(unit_price) from products;
+select product_name, min(unit_price) from products;
+
+Отсортировать продукты по возрастанию цены
+select product_name, unit_price from products order by unit_price asc;
+
+Write a query to get Product list (id, name, unit price) where products cost between $15 and $25.
+Написать запрос для получения списка продуктов, не снятых с производства, для которых стоимость находится в пределах между $15 и $25.
+select product_id, product_name, unit_price, discontinued from products  where ((unit_price>=15) and (unit_price<=25) and (discontinued==false)) order by unit_price asc;
+
+Write a query to get Product list (name, unit price) of above average price.
+Написать запрос для получения списка продуктов, не снятых с производства, стоимость которых выше средней цены.
+select product_id, product_name, unit_price from products  where ((unit_price>(select avg(unit_price) from products)) and (discontinued==false)) order by unit_price asc;
+
+Write a query to get Product list (name, unit price) of ten most expensive products.
+Написать запрос для получения списка продуктов (название, цена за упаковку) десяти наиболее дорогих продуктов, отличающихся по цене.
+select product_name, unit_price from products order by unit_price desc limit 10;
+SELECT DISTINCT product_name, unit_price
+FROM Products AS a
+WHERE 10 >= (SELECT COUNT(DISTINCT unit_price)
+                    FROM Products AS b
+                    WHERE b.unit_price >= a.unit_price)
+ORDER BY unit_price desc;
+
+Write a query to get Product list (name, units on order , units in stock) of stock is less than the quantity on order.
+Написать запрос для получения списка продуктов (название, количество в запасе, заказанное количество), количество которых в запасе меньше заказанного.
+select product_name, units_in_stock, units_on_order from products where units_in_stock<units_on_order;
+
+Написать запрос, в котором вывести список продуктов, их категорию и поставщиков (название компании, контактное лицо).
+select product_name, company_name, contact_name from products, suppliers where products.supplier_id==suppliers.supplier_id order by company_name;
+
+Написать запрос для вывода списка служащих (имя, фамилия) и закрепленные за ними районы.
+select first_name,last_name, title, territory_description from employees, territories, employee_territories 
+where ((employee_territories.employee_id == employees.employee_id)and(employee_territories.territory_id == territories.territory_id));
+
+Написать запрос для вывода служащего (имя, фамилия, город, адрес), который отвечает за поставки в город Бостон
+select first_name, last_name, title, city, address, territory_description from employees, territories, employee_territories
+where ((employee_territories.employee_id == employees.employee_id)and(employee_territories.territory_id == territories.territory_id)and(territories.territory_description=='Boston'));
+
+Вывести список мест и регионов, где они находятся
+SELECT territory_description, region_description FROM territories NATURAL JOIN region;
+
+Вывести список заказов: заказчик (фирма, имя), служащий (имя, фамилия), дата заказа за 1996 год
+select order_date, company_name, contact_name, last_name, first_name from orders 
+join customers using (customer_id) join employees using (employee_id) where (order_date>'1996-11-30' and order_date<'1997-01-01');
+
+Вывести служащих, которые оформили заказы на поставку в Берлин; название заказанного продукта, дата заказа; имя и компания заказчика
+SELECT e.first_name, e.last_name, e.home_phone, o.order_date, p.product_name, c.contact_name, c.company_name, c.city 
+FROM employees e 
+JOIN orders o ON (e.employee_id = o.employee_id) 
+JOIN order_details od ON (od.order_id = o.order_id) 
+JOIN products p ON (p.product_id==od.product_id)
+JOIN customers c ON (o.customer_id==c.customer_id)
+WHERE LOWER(c.city) = 'berlin';
+
+Вывести название товаров, доставленных компанией united package за 1996 г.
+SELECT p.product_name 'Product', s.company_name 'Shipper', o.order_date 'Date' 
+FROM products p 
+JOIN order_details od ON (od.product_id = p.product_id)
+JOIN orders o ON (o.order_id = od.order_id)
+join shippers s ON (o.ship_via = s.shipper_id)
+WHERE (LOWER(s.company_name) = 'united package' and o.order_date<'1997-01-01');
+
+Вывести служащего, который был нанят после служащего Andrew Fuller.
+Вывести список служащих и дату их найма.
+select first_name, last_name, hire_date from employees order by hire_date;
+SELECT e.first_name, e.last_name, e.hire_date 
+FROM employees e 
+JOIN employees e2 ON (e2.last_name = 'Fuller') 
+WHERE e2.hire_date < e.hire_date limit 1;
+
+Вывести число продуктов в каждой категории
+SELECT category_name AS 'Category of products', 
+COUNT(*) AS 'No of Products' 
+FROM categories 
+INNER JOIN products ON products.category_id = categories.category_id 
+GROUP BY categories.category_id, category_name 
+ORDER BY category_name;
+Проверка: вывести продукты из категории Beverages
+select category_name, product_name
+from categories,products
+where (categories.category_id=products.category_id and categories.category_name='Beverages');
+
+Вывести фамилию, имя и должность сотрудников, а также количество заказов, оформленных каждым сотрудником
+SELECT last_name, first_name, title, order_date, count(*) FROM orders
+NATURAL JOIN employees group by last_name, first_name;
+
+SELECT julianday(max(order_date)) - julianday(min(order_date)) as diff FROM orders;
+
+Вывести название самого дорогого продукта в каждой категории
+SELECT category_name AS 'Category of products', 
+max(products.unit_price) AS 'Price', product_name 
+FROM categories 
+INNER JOIN products ON products.category_id = categories.category_id 
+GROUP BY categories.category_id, category_name 
+ORDER BY category_name;
+
+Вывести поставщиков для данной категории продуктов
+SELECT c.category_name, p.product_name, s.company_name 
+FROM categories c 
+JOIN products p ON (c.category_id = p.category_id) 
+JOIN suppliers s USING (supplier_id) where c.category_name = 'Beverages';
+
+Для каждого поставщика вывести среднее значение стоимости заказа
+SELECT avg(order_details.unit_price*quantity) as 'Price', company_name
+FROM order_details 
+INNER JOIN products ON products.product_id= order_details.product_id
+INNER JOIN suppliers ON products.supplier_id= suppliers.supplier_id
+group by company_name;
+
+Вывести категории продуктов, поставщиков для каждой категории и количество поставляемых товаров (если это количество больше 1)
+select category_name, company_name, count(products.product_id) as count from categories
+inner join products on categories.category_id=products.category_id
+inner join suppliers on suppliers.supplier_id=products.supplier_id
+group by category_name, company_name
+having count>1
+order by category_name;
+
+Представления, view, хранимый запрос, просмотр, именованный запрос select
+Создать представление (view), в котором содержится категория продукта, название продукта и цена за единицу продукта
+create view if not exists cat_prod as
+select category_name, product_name, unit_price from categories
+inner join products on categories.category_id=products.category_id;
+
+.tables
+
+select * from cat_prod limit 10;
+
+Используя представление, вывести количество продуктов в каждой категории и общее количество продуктов
+select category_name, count(*) from cat_prod 
+group by category_name
+union all
+select '-----', '-----'
+union all
+select 'Total', count(*) from  cat_prod; 
+
+Создать представление для вывода регионов и территорий
+create view if not exists reg_ter as
+select region_description, territory_description from region
+left join territories on territories.region_id=region.region_id;
+
+drop view reg_ter;
+select * from reg_ter;
+
+Используя представление, вывести регионы и количество территорий в них
+select region_description, count(*) from reg_ter 
+group by region_description
+union all
+select '-----', '-----'
+union all
+select 'Total', count(*) from  reg_ter;
+
+select count(*) from reg_ter
+where region_description like 'Northern';
+
+После добавления территории в таблицу, добавится ли строка в представление?
+Определить id последней записи (автоинкремент не работает)
+select * from territories;
+Добавить id несуществующего региона
+insert into territories(territory_id, territory_description, region_id) values(98108, 'new territory',0);
+В представлении территория с несуществующим id региона не отображается
+select * from reg_ter;
+
+Временные таблицы
+Запрос Cross Join
+Создать таблицу карт (от 6 до туза) и их мастей
+create temporary table ranks(name varchar(2));
+create temporary table suits(name varchar(10));
+INSERT INTO ranks(name) VALUES('6'),('7'),('8'),('9'),('10'),('В'),('Д'),('К'),('Т');
+INSERT INTO suits(name) VALUES ('пики'),('червы'),('бубны'),('трефы');
+select * from ranks;
+select * from suits;
+create temporary table cards as SELECT * FROM ranks CROSS JOIN suits;
+select * from cards;
+
+Объединение (union), объединение всех (union all)
+CREATE temporary TABLE t1(v1 INT);
+INSERT INTO t1(v1) VALUES(1),(2),(3);
+CREATE temporary TABLE t2(v2 INT);
+INSERT INTO t2(v2) VALUES(2),(3),(4);
+SELECT v1 FROM t1
+UNION all
+SELECT v2 FROM t2;
+drop table if exists t1;
+drop table if exists t2;
+
+Исключение (except), пересечение(intersect)
+CREATE TABLE t1(v1 INT);
+INSERT INTO t1(v1) VALUES(1),(2),(3);
+CREATE TABLE t2(v2 INT);
+INSERT INTO t2(v2) VALUES(2),(3),(4);
+SELECT v1 FROM t1
+intersect
+SELECT v2 FROM t2;
+drop table if exists t1;
+drop table if exists t2;
+
+Вместо intersect можно использовать inner join
+CREATE TABLE t1(v1 INT);
+INSERT INTO t1(v1) VALUES(1),(2),(3);
+CREATE TABLE t2(v2 INT);
+INSERT INTO t2(v2) VALUES(2),(3),(4);
+SELECT v1 FROM t1
+inner join t2 on v1=v2;
+drop table t1;
+drop table t2;
+
+Триггеры
+Создать триггер, который добавляет в новую таблицу территории при добавлении ее в основную таблицу
+create table new_territories(id INTEGER PRIMARY KEY autoincrement, name text not null);
+drop trigger if exists insert_territory;
+CREATE TRIGGER insert_territory after insert ON territories
+  BEGIN
+    insert into new_territories(name) values(new.territory_description);
+  END;
+  
+ insert into territories(territory_id, territory_description, region_id) values(98109, 'new territory 1',1); 
+select * from new_territories;
+
+Создать триггер, который проверяет название добавляемой территории (название не менее двух букв)
+drop trigger if exists validate_territory_before_insert;
+CREATE TRIGGER validate_territory_before_insert
+   BEFORE INSERT ON territories
+BEGIN
+   SELECT
+      CASE
+	WHEN NEW.territory_description NOT LIKE '%__' THEN
+   	  RAISE (ABORT,'Invalid name of territory')
+       END;
+END;
+ insert into territories(territory_id, territory_description, region_id) values(98111, '1',1);
+ 
+Существует ли регион с заданным id?
+SELECT not EXISTS(SELECT 1 FROM region WHERE region_id=1);
+
+Переписать предыдущий триггер, чтобы выполнялась проверка region_id (не получается)
+drop trigger if exists validate_region_id_before_insert;
+CREATE TRIGGER validate_region_id_before_insert
+BEFORE INSERT ON territories
+begin select case
+WHEN EXISTS(SELECT 1 FROM region WHERE region_id=new.region_id) = 0
+THEN RAISE (ABORT,'region id doesn't exist')
+END;
+end;
+ insert into territories(territory_id, territory_description, region_id) values(98112, 'a1',6);
+ 
+ Индексы
+ drop index ind_territory;
+ CREATE INDEX ind_territory ON territories (territory_description);
+ pragma index_list(territories);
+.indices
+.indices territories
+
+Использование:
+EXPLAIN QUERY PLAN 
+SELECT territory_description FROM territories
+WHERE territory_description like 's%';
+
+Транзакции (ACID - atomic, consistent, isolation, durable)
+drop table if exists accounts;
+drop table if exists account_changes;
+
+CREATE TABLE accounts ( 
+	account_no INTEGER NOT NULL, 
+	balance DECIMAL NOT NULL DEFAULT 0,
+	PRIMARY KEY(account_no),
+        CHECK(balance >= 0)
+);
+
+CREATE TABLE account_changes (
+	change_no integer PRIMARY KEY autoincrement,
+	account_no INTEGER NOT NULL, 
+	flag TEXT NOT NULL, 
+	amount DECIMAL NOT NULL, 
+	changed_at TEXT NOT NULL 
+);
+
+INSERT INTO accounts (account_no,balance) VALUES (100,2000);
+INSERT INTO accounts (account_no,balance) VALUES (200,1000);
+
+BEGIN TRANSACTION;
+UPDATE accounts SET balance = balance - 100 WHERE account_no = 100;
+UPDATE accounts SET balance = balance + 100 WHERE account_no = 200;
+INSERT INTO account_changes(account_no,flag,amount,changed_at) 
+VALUES(100,'-',100,datetime('now'));
+
+INSERT INTO account_changes(account_no,flag,amount,changed_at) 
+VALUES(200,'+',100,datetime('now'));
+
+COMMIT;
+
+select * from accounts;
+select * from account_changes;
+
+Снять сумму, превышающую сумму на счету
+BEGIN TRANSACTION;
+UPDATE accounts
+   SET balance = balance - 20000
+ WHERE account_no = 100;
+INSERT INTO account_changes(account_no,flag,amount,changed_at) 
+VALUES(100,'-',20000,datetime('now'));
+
+SELECT * FROM account_changes;
+
+ROLLBACK;
+
