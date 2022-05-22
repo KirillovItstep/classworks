@@ -1,0 +1,8 @@
+/*
+    http://localhost:8080/users?size=10&page=0&sort=surname,asc&search=name==Петр;surname==Агеев
+    http://localhost:8080/users?size=10&page=0&sort=surname,asc&search=name!=Иван;surname==Иванов
+    http://localhost:8080/users?size=10&page=0&sort=surname,asc&search=name<Антон
+    http://localhost:8080/users?size=10&page=0&sort=surname,asc&search=name==В*;surname==И*
+    http://localhost:8080/users?size=10&page=0&sort=surname,asc&search=name==*ви*
+    http://localhost:8080/users?size=10&page=0&sort=surname,asc&search=name=in=(Юрий,Яков)
+     */
