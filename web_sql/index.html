@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+</head>
+<body>
+<script>
+    var dbName = 'employees';
+    var db = openDatabase(dbName, '1.0', 'description', 10000000);
+    var reg = new RegExp('[\\r\\n]','g');
+
+    /*
+    $.get('employees.ddl', function(response) {
+        console.log(response.replace(reg,'').split(';'));
+        processQuery(db, response.replace(reg,'').split(';'), dbName);
+    });
+    $.get('employees.sql', function(response) {
+        queries = response.replace(reg,'').split(';');
+        processQuery(db, response.replace(reg,'').split(';'), dbName);
+    });
+*/
+
+    function tableInsert(url) {
+        var dfd = $.Deferred();
+        var arr = [];
+        $.get(url, function(response) {
+            var queries = response.replace(reg,'').split(';');
+            //console.log(queries)
+           for (let i=0; i<queries.length; i++) {
+                var dfd = $.Deferred();
+                arr.push(dfd.promise());
+                db.transaction(function(tx) {
+                    tx.executeSql(
+                       queries[i],[],
+                        function(){
+                            //onSuccess(dfd.resolve);
+                        },
+                        function(){
+                            //onError(dfd.resolve);
+                        }
+                    );
+                });
+            }
+            $.when.apply(this, arr).then(dfd.resolve);
+        });
+        return dfd.promise();
+    }
+
+    $.when(tableInsert("employees.ddl"),
+        tableInsert("employees.sql"))
+        .then(function(){
+            console.log( 'All processing complete' );
+        });
+
+    //Есть ли таблица с заданным именем
+    db.transaction(function(tx) {
+        tx.executeSql(
+            "SELECT name FROM sqlite_master WHERE type='table'",[],
+                //onSuccess(dfd.resolve);
+                function(transaction, results){ console.log(results.rows[0].name=='__WebKitDatabaseInfoTable__');},
+            function(){
+                //onError(dfd.resolve);
+            }
+        );
+    });
+</script>
+</body>
+</html>
