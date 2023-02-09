@@ -1,1 +1,45 @@
+--Максимальная стипендия
+select max(stipend) from student;
 
+--Студент с максимальной стипендией
+select surname, name, stipend from student
+where stipend in (select max(stipend) from student);
+
+select s.surname, s.name, s.stipend, u.UNIV_NAME
+from student s
+inner join university u
+on (s.UNIV_ID=u.UNIV_ID)
+where stipend in (select max(stipend) from student);
+
+--Топ 10 студентов по стипендии
+select surname, name, stipend from student order by stipend desc limit 10;
+
+--Сколько студентов имеют стипендию 550?
+select count(STIPEND)  from student where stipend = 550.0;
+
+--Вывести распределение количества студентов по получаемым стипендиям
+select count(surname) as c,stipend from student
+group by stipend
+order by c; 
+
+--В каком университете больше всего студентов
+select univ_name ,count(student_id) 
+from student s, university u
+where s.univ_id=u.univ_id
+group by univ_name; 
+
+--Какие студенты не зачислены в университет?
+--В каком университете нет студентов?
+select u.univ_name, count(student_id) as count
+from student s
+right join university u
+on (s.univ_id=u.univ_id)
+group by s.univ_id
+having count=0;
+
+--Распределение студентов по именам
+--Вывести распределение по оценкам
+--Все предметы, по которым сдавались экзамены и количество студентов на них
+--Из каких городов преподаватели?
+--Вывести топ 10 студентов и их средний балл
+--Количество студентов с одними пятерками 
