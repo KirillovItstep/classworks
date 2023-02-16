@@ -1,0 +1,196 @@
+db.employer.insertMany([
+                            {
+                                "id": 68319,
+                                "name": "KAYLING",
+                                "job": "PRESIDENT",
+                                "manager_id": "null",
+                                "hire_date": "1991-11-18",
+                                "salary": 6000.00,
+                                "commission": null,
+                                "department_id": 1001
+                            },
+                            {
+                                "id": 66928,
+                                "name": "BLAZE",
+                                "job": "MANAGER",
+                                "manager_id": 68319,
+                                "hire_date": "1991-05-01",
+                                "salary": 2750.00,
+                                "commission": null,
+                                "department_id": 3001
+                            },
+                            {
+                                "id": 67832,
+                                "name": "CLARE",
+                                "job": "MANAGER",
+                                "manager_id": 68319,
+                                "hire_date": "1991-06-09",
+                                "salary": 2550.00,
+                                "commission": null,
+                                "department_id": 1001
+                            },
+                            {
+                                "id": 65646,
+                                "name": "JONAS",
+                                "job": "MANAGER",
+                                "manager_id": 68319,
+                                "hire_date": "1991-04-02",
+                                "salary": 2957.00,
+                                "commission": null,
+                                "department_id": 2001
+                            },
+                            {
+                                "id": 67858,
+                                "name": "SCARLET",
+                                "job": "ANALYST",
+                                "manager_id": 65646,
+                                "hire_date": "1997-04-19",
+                                "salary": 3100.00,
+                                "commission": null,
+                                "department_id": 2001
+                            },
+                            {
+                                "id": 69062,
+                                "name": "FRANK",
+                                "job": "ANALYST",
+                                "manager_id": 65646,
+                                "hire_date": "1991-12-03",
+                                "salary": 3100.00,
+                                "commission": null,
+                                "department_id": 2001
+                            },
+                            {
+                                "id": 63679,
+                                "name": "SANDRINE",
+                                "job": "CLERK",
+                                "manager_id": 69062,
+                                "hire_date": "1990-12-18",
+                                "salary": 900.00,
+                                "commission": null,
+                                "department_id": 2001
+                            },
+                            {
+                                "id": 64989,
+                                "name": "ADELYN",
+                                "job": "SALESMAN",
+                                "manager_id": 66928,
+                                "hire_date": "1991-02-20",
+                                "salary": 1700.00,
+                                "commission": 400.00,
+                                "department_id": 3001
+                            },
+                            {
+                                "id": 65271,
+                                "name": "WADE",
+                                "job": "SALESMAN",
+                                "manager_id": 66928,
+                                "hire_date": "1991-02-22",
+                                "salary": 1350.00,
+                                "commission": 600.00,
+                                "department_id": 3001
+                            },
+                            {
+                                "id": 66564,
+                                "name": "MADDEN",
+                                "job": "SALESMAN",
+                                "manager_id": 66928,
+                                "hire_date": "1991-09-28",
+                                "salary": 1350.00,
+                                "commission": 1500.00,
+                                "department_id": 3001
+                            },
+                            {
+                                "id": 68454,
+                                "name": "TUCKER",
+                                "job": "SALESMAN",
+                                "manager_id": 66928,
+                                "hire_date": "1991-09-08",
+                                "salary": 1600.00,
+                                "commission": 0.00,
+                                "department_id": 3001
+                            },
+                            {
+                                "id": 68736,
+                                "name": "ADNRES",
+                                "job": "CLERK",
+                                "manager_id": 67858,
+                                "hire_date": "1997-05-23",
+                                "salary": 1200.00,
+                                "commission": null,
+                                "department_id": 2001
+                            },
+                            {
+                                "id": 69000,
+                                "name": "JULIUS",
+                                "job": "CLERK",
+                                "manager_id": 66928,
+                                "hire_date": "1991-12-03",
+                                "salary": 1050.00,
+                                "commission": null,
+                                "department_id": 3001
+                            },
+                            {
+                                "id": 69324,
+                                "name": "MARKER",
+                                "job": "CLERK",
+                                "manager_id": 67832,
+                                "hire_date": "1992-01-23",
+                                "salary": 1400.00,
+                                "commission": null,
+                                "department_id": 1001
+                            }
+                        ]);
+
+
+db.department.insertMany(
+[
+    {
+        "id": 1001,
+        "name": "FINANCE",
+        "location": "SYDNEY"
+    },
+    {
+        "id": 2001,
+        "name": "AUDIT",
+        "location": "MELBOURNE"
+    },
+    {
+        "id": 3001,
+        "name": "MARKETING",
+        "location": "PERTH"
+    },
+    {
+        "id": 4001,
+        "name": "PRODUCTION",
+        "location": "BRISBANE"
+    }
+]);
+
+db.salary_grade.insertMany(
+[
+    {
+        "grade": 1,
+        "min_salary": 800,
+        "max_salary": 1300
+    },
+    {
+        "grade": 2,
+        "min_salary": 1301,
+        "max_salary": 1500
+    },
+    {
+        "grade": 3,
+        "min_salary": 1501,
+        "max_salary": 2100
+    },
+    {
+        "grade": 4,
+        "min_salary": 2101,
+        "max_salary": 3100
+    },
+    {
+        "grade": 5,
+        "min_salary": 3101,
+        "max_salary": 9999
+    }
+]);
