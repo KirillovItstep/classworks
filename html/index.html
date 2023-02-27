@@ -8,7 +8,6 @@
     <title>Document</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@200;400;600&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -27,6 +26,7 @@
             opacity:0.8;
             filter:brightness(70%);
             z-index:-1;
+            width:960px;
         }
 
         .fa-dog{
@@ -37,7 +37,15 @@
             font-family: Kanit;
             font-size:22px;
             font-weight: 600;
-            margin-top:-8px;
+            margin-top:-6px;
+        }
+
+        .input-search{
+            width:100px;
+            display:inline;
+            outline:none;
+            padding:2px;
+            margin-top: 4px;
         }
     </style>
     <link rel="stylesheet" href="w3.css">
@@ -45,13 +53,28 @@
 
 <body>
     <!--Header-->
-    <header class="w3-bar" style="background-color: rgba(0,0,0,0); width:600px">
+    <header class="w3-bar" style="background-color: rgba(0,0,0,0); width:960px">
         <div class="w3-bar-item puppi-font">&nbsp;<i class="fa-solid fa-dog"></i>&nbsp;
             Puppi Care
         </div>
         <a href="#" class="w3-bar-item w3-button">About</a>
         <a href="#" class="w3-bar-item w3-button">Service</a>
-
+        <div class="w3-dropdown-hover">
+            <button class="w3-button">
+                Dropdown <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="w3-dropdown-content w3-bar-block w3-white w3-card-4">
+                <a href="#" class="w3-bar-item w3-button w3-text-black">Link 1</a>
+                <a href="#" class="w3-bar-item w3-button w3-text-black">Link 2</a>
+                <a href="#" class="w3-bar-item w3-button w3-text-black">Link 3</a>
+            </div>
+        </div>
+        <a href="#" class="w3-bar-item w3-button w3-hide-small">Contact</a>
+        <div class="w3-bar-item w3-right" style="padding:0">
+            <input class="w3-input w3-border w3-round-xxlarge input-search" type="text">
+            <a href="#" class="w3-button"><i class="fa fa-search"></i></a>
+        </div>
+        </div>
     </header>
 
     <img src="images/dog.webp" class="box w3-sepia-min"><br />
