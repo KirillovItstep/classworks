@@ -6,61 +6,86 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link
-        href="https://fonts.googleapis.com/css2?family=Kanit:wght@200;400;600&family=Roboto:wght@300;400;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Kanit:wght@100;400;500&family=Roboto:wght@100;400;500&display=swap"
         rel="stylesheet">
+
     <style>
         body {
-            margin: 0;
+            font-size: 12px;
+        }
+
+        header {
+            color: white;
         }
 
         .box {
             --mask:
-                radial-gradient(223.61px at 50% calc(100% - 300.00px), #000 99%, #0000 101%) calc(50% - 200px) 0/400px 100%,
-                radial-gradient(223.61px at 50% calc(100% + 200.00px), #0000 99%, #000 101%) 50% calc(100% - 100px)/400px 100% repeat-x;
+                radial-gradient(201.25px at 50% calc(100% - 270.00px), #000 99%, #0000 101%) calc(50% - 180px) 0/360px 100%,
+                radial-gradient(201.25px at 50% calc(100% + 180.00px), #0000 99%, #000 101%) 50% calc(100% - 90px)/360px 100% repeat-x;
             -webkit-mask: var(--mask);
             mask: var(--mask);
             position: absolute;
             top: 0;
             left: 0;
+            z-index: -1;
             opacity: 0.8;
             filter: brightness(70%);
-            z-index: -1;
-            width: 960px;
+        }
+
+        .puppi-font {
+            font-family: Kanit;
+            font-size: 16px;
+            font-weight: 500;
+            margin-top: -4px;
+        }
+
+        .input-search {
+            width: 100px;
+            display: inline;
+            padding: 2px;
+            margin-top: 4px;
+            outline: none;
+        }
+
+        .message {
+            color: white;
+            font-size: 48px;
+            font-family: Kanit;
+            font-weight: 500;
+            margin: 200px 0 0 50px;
         }
 
         .fa-dog {
             color: red;
         }
 
-        .puppi-font {
-            font-family: Kanit;
-            font-size: 22px;
-            font-weight: 600;
-            margin-top: -6px;
+        .fa-users-medical{
+            color:red;
         }
 
-        .input-search {
-            width: 100px;
-            display: inline;
-            outline: none;
-            padding: 2px;
-            margin-top: 4px;
+        .big-title{
+            font-family: Kanit;
+            font-size: 22px;
+            font-weight: 500;
+        }
+
+        .small-title{
+            font-family: Kanit;
+            font-size: 16px;
+            font-weight: 500;
         }
     </style>
-    <link rel="stylesheet" href="w3.css">
 </head>
 
 <body>
     <!--Header-->
-    <header class="w3-bar" style="background-color: rgba(0,0,0,0); width:960px">
-        <div class="w3-bar-item puppi-font">&nbsp;<i class="fa-solid fa-dog"></i>&nbsp;
-            Puppi Care
-        </div>
+    <header class="w3-bar" style="background-color:rgba(0,0,0,0); width:800px">
+        <div class="w3-bar-item puppi-font">&nbsp;<i class="fa-solid fa-dog"></i>&nbsp;Puppi Care</div>
         <a href="#" class="w3-bar-item w3-button">About</a>
-        <a href="#" class="w3-bar-item w3-button">Service</a>
+        <a href="#" class="w3-bar-item w3-button w3-hide-small">Service</a>
         <div class="w3-dropdown-hover">
             <button class="w3-button">
                 Dropdown <i class="fa fa-caret-down"></i>
@@ -72,18 +97,56 @@
             </div>
         </div>
         <a href="#" class="w3-bar-item w3-button w3-hide-small">Contact</a>
-        <div class="w3-bar-item w3-right" style="padding:0; margin-right:50px">
+        <div class="w3-bar-item w3-right" style="padding:0">
             <input class="w3-input w3-border w3-round-xxlarge input-search" type="text">
             <a href="#" class="w3-button"><i class="fa fa-search"></i></a>
         </div>
         </div>
     </header>
 
-    <img src="images/dog.webp" class="box w3-sepia-min"><br />
+    <div class="message">Make your dogs looks<br/>their best</div>
+    <button class="w3-button w3-red w3-btn w3-round-xlarge" style="margin:10px 0 0 50px">Visit</button>
 
-    <img src="images/puppyCare.jpg" style="width:400px; margin-top:400px">
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/js/all.min.js"></script>
+    <!--Main-->
+    <div class="w3-container w3-blue" style="height:25vh; opacity: 0;"></div>
+    <div class="w3-container w3-row">
+        <div class="w3-col l5 m9 s12 w3-padding-16">
+            <p class="big-title">How we can help you properly</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p> 
+            <button class="w3-button w3-red w3-btn w3-round-xlarge" style="margin:10px 0 0 50px">Help</button>
+        </div>
+        <div class="w3-col l2 m3 s6 w3-padding-16">
+            <div class="w3-row w3-padding-16">
+                <i class="fa-solid fa-notes-medical fa-lg"></i>
+                <p class="small-title">Full diagnostic</p>                
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+            </div>
+            <div class="w3-row w3-padding-16">
+                <i class="fa-solid fa-award fa-lg"></i>
+                <p class="small-title">Awarded services</p>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+            </div>
+        </div>
+        <div class="w3-col l2 m3 s6 w3-padding-16">
+            <div class="w3-row w3-padding-16">
+                <i class="fa-solid fa-paw fa-lg"></i>
+                <p class="small-title">Dog breeding</p>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+            </div>
+            <div class="w3-row w3-padding-16">
+                <i class="fa-solid fa-dumbbell fa-lg"></i>
+                <p class="small-title">Dog training</p>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+            </div>
+        </div>
+        <img src="images/dog.webp" class="box w3-sepia-min" style="width:800px"><br />
+        <img src="images/puppyCare.jpg"><br />
+        <a href="https://www.w3schools.com/colors/colors_picker.asp">HTML color picker</a><br />
+        <a href="https://css-generators.com/wavy-shapes/">Wavy shapes</a><br />
+        <a href="https://fonts.google.com/">Google fonts</a><br />
+    </div>
+    <footer class="w3-container">footer</footer>
+    <script src=" https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/js/all.min.js"></script>
 </body>
 
 </html>
