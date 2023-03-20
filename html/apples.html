@@ -9,27 +9,28 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"
         integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+
 </head>
 
 <body>
     <div>
         <ul class="mb-5 flex list-none flex-col flex-wrap border-b-0 pl-0 md:flex-row" role="tablist" data-te-nav-ref>
             <li role="presentation">
-                <a href="#tabs-p" id="a-home"
+                <a href="#tabs-p" id="a-p"
                     class="my-2 block border-x-0 border-t-0 border-b-2 border-transparent px-7 pt-4 pb-3.5 text-xs font-medium uppercase leading-tight text-neutral-500 hover:isolate hover:border-transparent hover:bg-neutral-100 focus:isolate focus:border-transparent data-[te-nav-active]:border-primary data-[te-nav-active]:text-primary dark:text-neutral-400 dark:hover:bg-transparent dark:data-[te-nav-active]:border-primary-400 dark:data-[te-nav-active]:text-primary-400"
-                    data-te-toggle="pill" data-te-target="#tabs-p" data-te-nav-active role="tab"
-                    aria-controls="tabs-p" aria-selected="true">Перестановки</a>
+                    data-te-toggle="pill" data-te-target="#tabs-p" data-te-nav-active role="tab" aria-controls="tabs-p"
+                    aria-selected="true">Перестановки</a>
             </li>
             <li role="presentation">
-                <a href="#tabs-profile"
+                <a href="#tabs-k" id="a-k"
                     class="focus:border-transparen my-2 block border-x-0 border-t-0 border-b-2 border-transparent px-7 pt-4 pb-3.5 text-xs font-medium uppercase leading-tight text-neutral-500 hover:isolate hover:border-transparent hover:bg-neutral-100 focus:isolate data-[te-nav-active]:border-primary data-[te-nav-active]:text-primary dark:text-neutral-400 dark:hover:bg-transparent dark:data-[te-nav-active]:border-primary-400 dark:data-[te-nav-active]:text-primary-400"
-                    data-te-toggle="pill" data-te-target="#tabs-profile" role="tab" aria-controls="tabs-profile"
+                    data-te-toggle="pill" data-te-target="#tabs-k" role="tab" aria-controls="tabs-k"
                     aria-selected="false">Размещения</a>
             </li>
             <li role="presentation">
-                <a href="#tabs-messages"
+                <a href="#tabs-c"  id="a-c"
                     class="my-2 block border-x-0 border-t-0 border-b-2 border-transparent px-7 pt-4 pb-3.5 text-xs font-medium uppercase leading-tight text-neutral-500 hover:isolate hover:border-transparent hover:bg-neutral-100 focus:isolate focus:border-transparent data-[te-nav-active]:border-primary data-[te-nav-active]:text-primary dark:text-neutral-400 dark:hover:bg-transparent dark:data-[te-nav-active]:border-primary-400 dark:data-[te-nav-active]:text-primary-400"
-                    data-te-toggle="pill" data-te-target="#tabs-messages" role="tab" aria-controls="tabs-messages"
+                    data-te-toggle="pill" data-te-target="#tabs-c" role="tab" aria-controls="tabs-c"
                     aria-selected="false">Сочетания</a>
             </li>
         </ul>
@@ -39,21 +40,23 @@
                 Tab 1 content
             </div>
             <div class="hidden opacity-0 transition-opacity duration-150 ease-linear data-[te-tab-active]:block"
-                id="tabs-profile" role="tabpanel" aria-labelledby="tabs-profile-tab">
+                id="tabs-k" role="tabpanel" aria-labelledby="tabs-k-tab">
                 Tab 2 content
             </div>
             <div class="hidden opacity-0 transition-opacity duration-150 ease-linear data-[te-tab-active]:block"
-                id="tabs-messages" role="tabpanel" aria-labelledby="tabs-profile-tab">
+                id="tabs-c" role="tabpanel" aria-labelledby="tabs-k-tab">
                 Tab 3 content
             </div>
         </div>
-        <img src="img/cherries.jpg">
     </div>
     <script src="js/script.js"></script>
     <script>
-        $('#a-home').click(permutations());
-        
-        
+
+        var images = ['img/apple.jpg', 'img/banana.jpg', 'img/cherries.jpg', 'img/pear.jpg'];
+
+        $('#a-p').click(permutations());
+        $('#a-k').click(kpermutations());
+        $('#a-c').click(combinations());
 
         function factorial(n) {
             return (n != 1) ? n * factorial(n - 1) : 1;
@@ -79,8 +82,40 @@
             return true;
         }
 
+        function nextSetA(a, n, m) {
+            var j;
+            do  // повторяем пока не будет найдено следующее размещение
+            {
+                j = n - 2;
+                while (j != -1 && a[j] >= a[j + 1]) j--;
+                if (j == -1)
+                    return false; // больше размещений нет
+                var k = n - 1;
+                while (a[j] >= a[k]) k--;
+                [a[j], a[k]] = swap(a[j], a[k]);
+                var l = j + 1, r = n - 1; // сортируем оставшуюся часть последовательности
+                while (l < r) {
+                    [a[l], a[r]] = swap(a[l], a[r]);
+                    l++; r--;
+                }
+            } while (j > m - 1);
+            return true;
+        }
+
+        function nextSetS(a, n, m) {
+            var k = m;
+            for (var i = k - 1; i >= 0; --i)
+                if (a[i] < n - k + i + 1) {
+                    ++a[i];
+                    for (var j = i + 1; j < k; ++j)
+                        a[j] = a[j - 1] + 1;
+                    return true;
+                }
+            return false;
+        }
+
         function permutations() {
-            var n = 4;
+            var n = 3;
             $('#tabs-p').html("Число перестановок из " + n + ": " + factorial(n) + "<br>");
 
             var a = [];
@@ -90,6 +125,7 @@
                 for (var i = 0; i < n; i++) {
                     img = $('<img src =' + images[a[i]] + ' width = "50" height = "50">');
                     img.css('margin', '8px');
+                    img.css('display', 'inline');
                     $('#tabs-p').append(img);
                 }
                 br = $('<br>');
@@ -98,6 +134,57 @@
                 var res = nextSet(a, n);
             }
             while (res);
+        }
+
+        function kpermutations() {
+            var n = 3; m = 2;
+            $('#tabs-k').html(
+                "Число размещений " + m + " из " + n + ": " + factorial(n) / factorial(n - m) + "<br>");
+
+            var a = [];
+            for (var i = 0; i < n; i++) a.push(i);
+            //console.log(a,res);
+            do {
+                for (var i = 0; i < m; i++) {
+                    img = $('<img src =' + images[a[i]] + ' width = "50" height = "50">');
+                    img.css('margin', '8px');
+                    img.css('display', 'inline');
+                    $('#tabs-k').append(img);
+                }
+                br = $('<br>');
+                $('#tabs-k').append(br);
+
+                //console.log(a, res);
+                var res = nextSetA(a, n, m);
+            }
+            while (res);
+
+        }
+
+        function combinations() {
+            var n = 4; m = 2;
+            $('#tabs-c').html(
+                "Число сочетаний:" + m + " из " + n + ": " + factorial(n) / factorial(n - m) / factorial(m) + "<br>");
+
+            var a = [];
+            //Алгоритм так себя ведет, что нужно заполнять массив, начиная с 1
+            for (var i = 0; i < n; i++) a.push(i + 1);
+            //console.log(a,res);
+            do {
+                for (var i = 0; i < m; i++) {
+                    img = $('<img src =' + images[a[i] - 1] + ' width = "50" height = "50">');
+                    img.css('margin', '8px');
+                    img.css('display', 'inline');
+                    $('#tabs-c').append(img);
+                }
+                br = $('<br>');
+                $('#tabs-c').append(br);
+
+                //console.log(a, res);
+                var res = nextSetS(a, n, m);
+            }
+            while (res);
+
         }
     </script>
 </body>
