@@ -1,0 +1,28 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/normalize.css">
+  <script src="js/jquery-3.3.1.min.js"></script>
+  <script src="js/density.js"></script>
+</head>
+<body> 
+<div class="container"> 
+<form id="form">
+<fieldset>
+    <legend>Исходные данные:</legend>
+    <p><label for="length">Длина a</label><input type="text" id="length" placeholder="Длина, мм"></p>
+    <p><label for="width">Ширина b</label><input type="text" id="width" placeholder="Ширина, мм"></p>
+	<p><label for="height">Высота c</label><input type="text" id="height" placeholder="Высота, мм"></p>
+	<p><label for="material">Материал:</label><select id="material" ></select></p>
+	<p><label for="density">Плотность &rho;&nbsp;</label><input type="text" id="density" placeholder="Плотность, г/мм^3">	</p>	
+  </fieldset>        
+<fieldset>
+    <legend>Результаты расчета:</legend>
+    <p><label for="volume">Объем V</label><input type="text" id="volume" placeholder="Объем, мм^3" disabled></p>
+	<p><label for="mass">Масса m</label><input type="text" id="mass" placeholder="Масса, г" disabled></p>
+  </fieldset>
+  <button id="form-submit" type="button">Расчет</button>
+</form>
+</div>
